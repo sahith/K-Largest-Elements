@@ -1,6 +1,6 @@
 /**
+ * @author Sakshi Gupta - sxg177130
  * @author Sahith Reddy - sxa180065
- * @author Sakshi Gupta - 
  */
 
 package sxa180065;
@@ -10,11 +10,12 @@ import java.util.Random;
 
 public class SP11 {
 	public static Random random = new Random();
-	public static int numTrials = 1;
+	public static int numTrials = 1;		    //Total Number of Trials
+	public static final int threshold = 14;
 
 	public static void main(String[] args) {
-		int n = 16000;
-		int kLargest = n / 2; // k indicates to find max k elements in a array
+		int n = 256000000;	//Number of elements in the array
+		int kLargest = n/2; // kLargest indicates to find max k elements in a array
 		int choice = 2;
 		if (args.length > 0) {
 			n = Integer.parseInt(args[0]);
@@ -28,14 +29,14 @@ public class SP11 {
 		}
 		Timer timer = new Timer();
 		switch (choice) {
-		case 1:
+		case 1:																									//Case1 - Max K using Randomized Partition
 			for (int i = 0; i < numTrials; i++) {
 				Shuffle.shuffle(arr);
 				select(arr, kLargest);
 			}
 			break;
 		case 2:
-			for (int i = 0; i < numTrials; i++) {
+			for (int i = 0; i < numTrials; i++) {									//Case2 - 	Max K using Priority Queue
 				Shuffle.shuffle(arr);
 				selectPQ(arr, kLargest);
 			}
@@ -95,18 +96,22 @@ public class SP11 {
 	}
 
 	/**
-	 * Select returns the index such that the last k elements of the array will be
-	 * max k elements
+	 * Select returns the index such that the last k 
+	 * elements of the array will be max k elements
+	 * @param  arr int[]
+	 * @param  p int
+	 * @param  n int
+	 * @param  k int
 	 */
 	public static int select(int[] arr, int p, int n, int k) {
-		if (n < 7) // If length of the array is less than a threshold, then Insertion sort is
-		           // called for optimization
+		if (n < threshold) // If length of the array is less than a threshold, then Insertion sort is called for optimization
 		{
 			insertionSort(arr, p, p + n - 1);
 			return n - k;
-		} else // else partition of array
+		} 
+		else     // else partition of array
 		{
-			int q = randomizedPartition(arr, p, p + n - 1);
+			int q = randomizedPartition(arr, p, p + n - 1); //Randomized Partition that separates the element using the pivot element
 			int left = q - p;
 			int right = n - left - 1;
 			if (right >= k) // if right side of the partition is greater then move the pivot to the right */
@@ -122,10 +127,15 @@ public class SP11 {
 	}
 
 	/**
-	
+	    Select for finding max k elements in an array using Randomized Partition
+	    which returns the index of the kth max element in the array
 	 */
-	public static void select(int[] arr, int k) {
-		select(arr, 0, arr.length, k);
+	public static int select(int[] arr, int k) {
+		if(k <= arr.length)
+		{
+			return select(arr, 0, arr.length, k);
+		}
+		throw new RuntimeException("K is greater than Array Length");     //K should be less than Array Length else throw exception
 	}
 
 	/**
@@ -134,20 +144,24 @@ public class SP11 {
 	 * @return
 	 */
 	public static PriorityQueue<Integer> selectPQ(int[] arr, int k) {
-		PriorityQueue<Integer> pq = new PriorityQueue<>(k); // Initializing a priority queue with size k
-		for (int i = 0; i < k; i++) // Adding first k elements of the array to priority queue
+		if(k <= arr.length)
 		{
-			pq.add(arr[i]);
-		}
-		int len = arr.length;
-		for (int i = k; i < len; i++) {
-			int head = pq.peek();
-			if (arr[i] > head) {
-				pq.remove();
+			PriorityQueue<Integer> pq = new PriorityQueue<>(k); // Initializing a priority queue with size k
+			for (int i = 0; i < k; i++) // Adding first k elements of the array to priority queue
+			{
 				pq.add(arr[i]);
 			}
+			int len = arr.length;
+			for (int i = k; i < len; i++) {
+				int head = pq.peek();
+				if (arr[i] > head) {     // Checking if the current element is greater than the head element else igonre the element
+					pq.remove();
+					pq.add(arr[i]);
+				}
+			}
+			return pq;
 		}
-		return pq;
+		throw new RuntimeException("K is greater than Array Length");     //K should be less than Array Length else throw exception
 	}
 
 	/**

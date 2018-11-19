@@ -1,0 +1,36 @@
+Comparison of Selection of max K elements in an array using 
+Case 1. Randomized Partition
+Case 2. Priority Queue Stream
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+N(Number of elements)              Selection using Randomized Partition          				Selection using Priority Queue Stream
+
+1. 16M							   	Time: 1044 msec.											 Time: 9599 msec.	
+									Memory: 63 MB / 128 MB.										 Memory: 731 MB / 1446 MB
+									
+									
+									
+									
+2. 32M								Time: 2335 msec.											 Time: 34705 msec.
+									Memory: 124 MB / 128 MB.									 Memory: 605 MB / 1515 MB.
+									
+
+
+3. 64M								Time: 5114 msec.											 Time: 111547 msec.					
+									Memory: 246 MB / 373 MB.									 Memory: 1183 MB / 1660 MB.			
+									
+										
+
+4. 128M							    Time: 10673 msec.											Time: 478071 msec.
+									Memory: 490 MB / 617 MB.									Memory: 1824 MB / 2048 MB.
+									
+
+5. 256M								Time: 26057 msec.											Out of Memory Error
+									Memory: 978 MB / 1105 MB.																
+																								
+																								
+																								
+																								
+									-------------------------------------------------------															
+																								
